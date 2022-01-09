@@ -1,0 +1,1 @@
+web: gunicorn projectwithrestapi.wsgi --log-file -
