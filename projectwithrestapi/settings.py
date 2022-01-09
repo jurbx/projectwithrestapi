@@ -81,6 +81,8 @@ ROOT_URLCONF = 'projectwithrestapi.urls'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+ALLOWED_HOSTS = 'projectwithrestapi.herokuapp.com'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -100,7 +102,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'projectwithrestapi.wsgi.application'
 
-ALLOWED_HOSTS = 'projectwithrestapi.herokuapp.com'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
