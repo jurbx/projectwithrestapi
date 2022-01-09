@@ -100,7 +100,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'projectwithrestapi.wsgi.application'
 
-
+ALLOWED_HOSTS = 'projectwithrestapi.herokuapp.com'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
