@@ -12,12 +12,11 @@ class PostCreateSerializer(serializers.ModelSerializer):
 
 class PostDetailSerializer(serializers.ModelSerializer):
     post_author_username = serializers.CharField(source='author.username', read_only=True)
-    author = serializers.CharField(default=serializers.CurrentUserDefault(), read_only=True)
     comments = serializers.SerializerMethodField()
 
     class Meta:
         model = PostInfo
-        fields = '__all__'
+        fields = ('id', 'title', 'desc', 'author', 'post_author_username', 'comments')
 
     def get_comments(self, obj):
         obj_id = obj.id
@@ -46,9 +45,10 @@ class CommentViewSerializer(serializers.ModelSerializer):
 
 
 class PostInfoSerializer(serializers.ModelSerializer):
-    author_username = serializers.CharField(source='author.username', read_only=True)
+    post_author_username = serializers.CharField(source='author.username', read_only=True)
+
     class Meta:
         model = PostInfo
-        fields = '__all__'
+        fields = ('id', 'title', 'desc', 'author', 'post_author_username')
 
 
