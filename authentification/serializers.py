@@ -59,3 +59,7 @@ class AccountSerializer(serializers.ModelSerializer):
         return attrs
 
 
+class AccountViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'avatar')

@@ -1,12 +1,12 @@
-from django.shortcuts import get_object_or_404
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.generics import RetrieveAPIView
 
 from post.permissions import IsOwnerOrNoAccess
 from .models import User
-from .serializers import RegisterSerializer, AccountSerializer
+from .serializers import RegisterSerializer, AccountSerializer, AccountViewSerializer
 
 from rest_framework import parsers, renderers, status
 from rest_framework.authtoken.serializers import AuthTokenSerializer
@@ -42,6 +42,12 @@ class AccountApiEditView(RetrieveUpdateAPIView, TokenAuthentication):
         data["last_name"] = user.last_name
         data["avatar"] = user.avatar
         return Response(data=data, status=status.HTTP_202_ACCEPTED)
+
+
+class AccountView(RetrieveAPIView):
+    permission_classes = (AllowAny, )
+    serializer_class = AccountViewSerializer
+    queryset = User.objects.all()
 
 
 class CustomObtainAuthToken(APIView):
