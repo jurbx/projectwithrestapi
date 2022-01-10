@@ -20,4 +20,4 @@ class Comment(models.Model):
 
 class Likes(models.Model):
     post_id = models.ForeignKey(PostInfo, on_delete=models.CASCADE)
-    count = models.PositiveIntegerField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE)

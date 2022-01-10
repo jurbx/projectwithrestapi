@@ -1,9 +1,12 @@
 from django.shortcuts import render
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
 
-from .models import PostInfo, Comment
+from .models import PostInfo, Comment, Likes
 from rest_framework import generics, status
-from .serializers import PostInfoSerializer, PostDetailSerializer, PostCreateSerializer, AddCommentSerializer
+from .serializers import PostInfoSerializer, PostDetailSerializer, PostCreateSerializer, AddCommentSerializer, \
+    AddOrRemoveLikesSerializer
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.views.decorators.csrf import get_token
@@ -54,3 +57,23 @@ class AddComment(generics.CreateAPIView):
 
     # def get_queryset(self):
     #     return super().get_queryset().filter(post=self.kwargs.get('post_id'))
+
+
+class AddLikes(generics.CreateAPIView, TokenAuthentication):
+    serializer_class = AddOrRemoveLikesSerializer
+    queryset = Likes.objects.all()
+    permission_classes(IsAuthenticated, )
+
+    def perform_create(self, serializer):
+        post = PostInfo.objects.get(id=self.kwargs.get('post_id'))
+        serializer.save(post_id=post)
+
+    def post(self, request, *args, **kwargs):
+        auth = super().authenticate(request)
+        if Likes.objects.filter(author=auth[0]):
+            Likes.objects.get(author=auth[0]).delete()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return super(AddLikes, self).post(request, *args, **kwargs)
+
+
