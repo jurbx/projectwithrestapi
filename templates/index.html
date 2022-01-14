@@ -13,9 +13,9 @@
 
     <a href="{% url 'post:get_csrf' %}">post/get_csrf/</a> - generate csrf token <br><br>
 
-    <a href="{% url 'authenticate:account' 2 %}">authentication/account/user.id/</a> - GET and PUT, can update password data {"password": "...", "password2": "..."} requires authenticate TOKEN, token input in header "Authorization": "Token {token value}" / return user data<br><br>
+    <a href="{% url 'authenticate:account' user1 %}">authentication/account/user.id/</a> - GET and PUT, can update password data {"password": "...", "password2": "..."} requires authenticate TOKEN, token input in header "Authorization": "Token {token value}" / return user data<br><br>
 
-    <a href="{% url 'authenticate:account_view' 2 %}">authentication/account/public/2/</a> - only GET , public account view, require nothing<br><br>
+    <a href="{% url 'authenticate:account_view' user1 %}">authentication/account/public/2/</a> - only GET , public account view, require nothing<br><br>
 
 <br>
 <br>
