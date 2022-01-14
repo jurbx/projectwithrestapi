@@ -17,7 +17,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PostInfo
-        fields = ('id', 'title', 'desc', 'author', 'post_author_username', 'comments', 'likes')
+        fields = ('id', 'title', 'desc', 'author', 'comments', 'likes')
 
     def get_comments(self, obj):
         obj_id = obj.id
@@ -56,7 +56,7 @@ class PostInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PostInfo
-        fields = ('id', 'title', 'desc', 'author', 'post_author_username')
+        fields = ('id', 'title', 'desc', 'author')
 
 
 class ViewLikesSerializer(serializers.ModelSerializer):
@@ -64,7 +64,7 @@ class ViewLikesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Likes
-        fields = ('author_username', )
+        fields = ('author', )
 
 
 class AddOrRemoveLikesSerializer(serializers.ModelSerializer):
