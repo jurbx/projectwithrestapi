@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
@@ -27,6 +28,7 @@ class AccountApiEditView(RetrieveUpdateAPIView, TokenAuthentication):
     queryset = User.objects.all()
     serializer_class = AccountSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrNoAccess)
+    lookup_field = 'slug'
 
     def put(self, request, *args, **kwargs):
         data = super().authenticate(request)
@@ -43,11 +45,18 @@ class AccountApiEditView(RetrieveUpdateAPIView, TokenAuthentication):
         data["avatar"] = user.avatar
         return Response(data=data, status=status.HTTP_202_ACCEPTED)
 
+    def get_queryset(self):
+        return User.objects.filter(slug=self.kwargs.get('slug'))
+    
 
 class AccountView(RetrieveAPIView):
     permission_classes = (AllowAny, )
     serializer_class = AccountViewSerializer
     queryset = User.objects.all()
+    lookup_field = 'slug'
+
+    def get_queryset(self):
+        return User.objects.filter(slug=self.kwargs.get('slug'))
 
 
 class CustomObtainAuthToken(APIView):

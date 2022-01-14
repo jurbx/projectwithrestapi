@@ -22,14 +22,14 @@
 <br>
 {% for item in posts %}
     <br>
-    <a href="{% url 'post:post_detail' item.pk %}">post/detail/{{ item.id }}/</a> - only GET,<br><br>
+    <a href="{% url 'post:post_detail' item.id %}">post/detail/{{ item.id }}/</a> - only GET,<br><br>
     <a href="{% url "post:post_edit" item.id %}">post/edit/{{ item.id }}/</a> - work request ["GET", "PUT", "DELETE"], requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"
     <br>
     {{ item.title }}
     <br>
     {{ item.desc }}
     <br>
-    {{ item.author.slug }}
+    {{ item.author.username }}
     <br>
     <a href="{% url 'post:add_comment'  item.id %}">post/add/comment/{{ item.id }}/</a> - only Post, data example: {"message": "..."} / return comment message and post_id, requires authenticate TOKEN, token input in header "Authorization": "Token {token value}" View post comments will be soon<br><br>
 {% endfor %}

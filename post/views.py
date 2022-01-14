@@ -72,8 +72,7 @@ class AddLikes(generics.CreateAPIView, TokenAuthentication):
         auth = super().authenticate(request)
         if Likes.objects.filter(author=auth[0]):
             Likes.objects.get(author=auth[0]).delete()
-            return Response(status=status.HTTP_200_OK)
-        else:
-            return super(AddLikes, self).post(request, *args, **kwargs)
+            return Response(data={'delete': 'successfully'}, status=status.HTTP_200_OK)
+        return super(AddLikes, self).post(request, *args, **kwargs)
 
 

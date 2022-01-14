@@ -4,7 +4,9 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.validators import URLValidator
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.urls import reverse
 from django.utils import timezone
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from django.db.models.signals import post_save
@@ -81,6 +83,7 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
             'unique': _("A user with that username already exists."),
         },
     )
+    slug = models.SlugField(max_length=150, db_index=True, unique=True, null=True, blank=True)
     first_name = models.CharField(_('first name'), max_length=150, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
     email = models.EmailField(_('email address'), unique=True)
@@ -111,7 +114,12 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
         verbose_name_plural = 'Пользователи'
 
     def __str__(self):
-        return str(self.id)
+        return self.username
+
+    def save(self, *args, **kwargs):
+        slug = slugify(self.username)
+        self.slug = slug
+        super().save(*args, **kwargs)
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
