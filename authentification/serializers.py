@@ -10,15 +10,14 @@ class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
+    first_name = serializers.CharField(required=False, default='', allow_blank=True)
+    last_name = serializers.CharField(required=False, default='', allow_blank=True)
+    avatar = serializers.URLField(required=False, default='https://isocarp.org/app/uploads/2014/05/noimage.jpg',
+                                  allow_blank=True)
 
     class Meta:
         model = User
         fields = ('username', 'email', 'password', 'password2', 'first_name', 'last_name', 'avatar')
-        extra_kwargs = {
-            'first_name': {'required': False},
-            'last_name': {'required': False},
-            'avatar': {'required': False}
-        }
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -29,9 +28,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
-            avatar=validated_data['avatar'],
+            first_name=validated_data.get('first_name'),
+            last_name=validated_data.get('last_name'),
+            avatar=validated_data.get('avatar'),
         )
         user.set_password(validated_data['password'])
         user.save()
