@@ -50,7 +50,8 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', False)
         return self._create_user(username, email, password, avatar, first_name, last_name, **extra_fields)
 
-    def create_superuser(self, username, email, password, avatar, first_name='', last_name='', **extra_fields):
+    def create_superuser(self, username, email, password, avatar='https://isocarp.org/app/uploads/2014/05/noimage.jpg',
+                         first_name='', last_name='', **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -87,8 +88,8 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
     first_name = models.CharField(_('first name'), max_length=150, blank=True, default='')
     last_name = models.CharField(_('last name'), max_length=150, blank=True, default='')
     email = models.EmailField(_('email address'), unique=True)
-    avatar = models.URLField(default='https://isocarp.org/app/uploads/2014/05/noimage.jpg',
-                             validators=[url_validator], blank=True)
+    avatar = models.URLField(default='https://isocarp.org/app/uploads/2014/05/noimage.jpg', validators=[url_validator],
+                             blank=True)
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
@@ -108,7 +109,7 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'avatar']
+    REQUIRED_FIELDS = ['email']
 
     class Meta:
         verbose_name_plural = 'Пользователи'
