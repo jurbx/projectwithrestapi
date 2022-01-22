@@ -15,8 +15,16 @@ class PostInfoSerializer(serializers.ModelSerializer):
         model = PostInfo
         fields = ('id', 'title', 'sections', 'author', 'comments', 'likes')
 
+    def get_sections(self, obj):
+        c_qs = Section.objects.filter(post_id=obj.id).order_by('id')
+        section = []
+        if c_qs:
+            c_qs = c_qs[0]
+            section = SectionDetailSerializer(c_qs, many=False).data
+        return section
+
     def get_author(self, obj):
-        c_qs = User.objects.get(id=obj.id)
+        c_qs = User.objects.get(id=obj.author.id)
         author = AccountViewSerializer(c_qs, many=False).data
         return author
 
@@ -30,11 +38,6 @@ class PostInfoSerializer(serializers.ModelSerializer):
         likes = ViewLikesSerializer(c_qs, many=True).data
         return likes
 
-    def get_sections(self, obj):
-        c_qs = Section.objects.filter(post_id=obj.id)
-        sections = SectionDetailSerializer(c_qs, many=True).data
-        return sections
-
 
 class PostDetailSerializer(PostInfoSerializer):
     class Meta:
@@ -42,9 +45,9 @@ class PostDetailSerializer(PostInfoSerializer):
         fields = '__all__'
 
     def get_sections(self, obj):
-        c_qs = Section.objects.filter(post_id=obj.id).order_by('id')[0]
-        section = SectionDetailSerializer(c_qs, many=False).data
-        return section
+        c_qs = Section.objects.filter(post_id=obj.id)
+        sections = SectionDetailSerializer(c_qs, many=True).data
+        return sections
 
 
 class PostCreateSerializer(serializers.ModelSerializer):
@@ -67,17 +70,18 @@ class SectionCreateSerializer(serializers.ModelSerializer):
 
 
 class SectionDetailSerializer(serializers.ModelSerializer):
+    author = serializers.HiddenField(source='author.username', default='usertest')
+
     class Meta:
         model = Section
         fields = '__all__'
         extra_kwargs = {
-            'post_id': {'required': False},
-            'author': {'required': False},
+            'post_id': {'required': False}
         }
 
 
 class AddCommentSerializer(serializers.ModelSerializer):
-    author = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    author = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
@@ -88,11 +92,16 @@ class AddCommentSerializer(serializers.ModelSerializer):
 
 
 class CommentViewSerializer(serializers.ModelSerializer):
-    author = serializers.CharField(source='author.username', read_only=True)
+    author = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
         fields = '__all__'
+
+    def get_author(self, obj):
+        c_qs = User.objects.get(id=obj.author.id)
+        author = AccountViewSerializer(c_qs, many=False).data
+        return author
 
 
 class ViewLikesSerializer(serializers.ModelSerializer):
