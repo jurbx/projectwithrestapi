@@ -1,6 +1,6 @@
 from rest_framework import permissions
 from rest_framework.authtoken.models import Token
-from rest_framework.authentication import get_authorization_header, TokenAuthentication
+from rest_framework.authentication import TokenAuthentication
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):

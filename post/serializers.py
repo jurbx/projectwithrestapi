@@ -76,7 +76,17 @@ class SectionDetailSerializer(serializers.ModelSerializer):
         model = Section
         fields = '__all__'
         extra_kwargs = {
-            'post_id': {'required': False}
+            'post_id': {'required': False},
+        }
+
+
+class SectionEditSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Section
+        fields = '__all__'
+        extra_kwargs = {
+            'post_id': {'required': False},
+            'author': {'required': False},
         }
 
 

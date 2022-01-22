@@ -1,14 +1,12 @@
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.shortcuts import render
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 
 from .models import PostInfo, Comment, Likes, Section
 from rest_framework import generics, status
 from .serializers import PostInfoSerializer, PostDetailSerializer, SectionCreateSerializer, AddCommentSerializer, \
-    AddOrRemoveLikesSerializer, PostCreateSerializer, SectionDetailSerializer
+    AddOrRemoveLikesSerializer, PostCreateSerializer, SectionEditSerializer
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.views.decorators.csrf import get_token
@@ -42,16 +40,19 @@ class SectionCreate(generics.CreateAPIView):
     permission_classes = (IsAuthenticated, )
 
     def perform_create(self, serializer):
-        try:
-            post = PostInfo.objects.get(id=self.kwargs.get('post_id'))
-            serializer.save(post_id=post)
-        except AttributeError:
-            return Response(data={'error': 'post with that id does not exist'})
+        post = PostInfo.objects.get(id=self.kwargs.get('post_id'))
+        serializer.save(post_id=post)
+
+    def create(self, request, *args, **kwargs):
+        post = PostInfo.objects.get(id=self.kwargs.get('post_id'))
+        if post.author == request.user:
+            return super().create(request, *args, **kwargs)
+        return Response(data={'error': 'invalid user'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SectionEdit(generics.RetrieveUpdateDestroyAPIView):
     queryset = Section.objects.all()
-    serializer_class = SectionDetailSerializer
+    serializer_class = SectionEditSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
 
 

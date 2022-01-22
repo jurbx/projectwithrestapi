@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from .views import PostCreate, PostView, PostDetail, get_csrf, PostEdit, AddComment, AddLikes, SectionCreate, SectionEdit
 
 app_name = 'post'
