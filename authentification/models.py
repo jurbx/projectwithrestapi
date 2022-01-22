@@ -84,8 +84,8 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
         },
     )
     slug = models.SlugField(max_length=150, db_index=True, unique=True, null=True, blank=True)
-    first_name = models.CharField(_('first name'), max_length=150, blank=True)
-    last_name = models.CharField(_('last name'), max_length=150, blank=True)
+    first_name = models.CharField(_('first name'), max_length=150, blank=True, null=True)
+    last_name = models.CharField(_('last name'), max_length=150, blank=True, null=True)
     email = models.EmailField(_('email address'), unique=True)
     avatar = models.URLField(default='https://isocarp.org/app/uploads/2014/05/noimage.jpg',
                              validators=[url_validator], blank=True)
