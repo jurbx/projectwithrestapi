@@ -36,7 +36,7 @@
     {{ item.author.username }}
     <br>
     <a href="{% url 'post:add_comment'  item.id %}">post/add/comment/{{ item.id }}/</a> - only Post, data example: {"message": "..."} / return comment message and post_id, requires authenticate TOKEN, token input in header "Authorization": "Token {token value}" View post comments will be soon<br><br>
-    <a href="{% url 'post:add_like' item.id %}"> like/{{ item.id }}/</a> - only Post, requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"
+    <a href="{% url 'post:add_like' item.id %}"> like/{{ item.id }}/</a> - only Post, requires authenticate TOKEN, <bold>second POST request remove like from user</bold>, token input in header "Authorization": "Token {token value}"
 {% endfor %}
 
 </body>
