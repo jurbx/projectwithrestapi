@@ -5,6 +5,10 @@
     <title>Title</title>
 </head>
 <body>
+    <h1>Standard Actions in API site</h1>
+    <br>
+    <hr>
+
     <a href="{% url 'authenticate:login' %}">Login : authentication/login/</a> - only Post/ return authenticate TOKEN<br><br>
     <a href="{% url 'authenticate:registration' %}">Registration : authentication/register/</a> - only Post, data example: {"username": "...", "email": "...", "password": "...", "password2": "...", "first_name": "...", "last_name": "...", "avatar": "..."} - only Post / return response<br><br>
 
@@ -18,18 +22,19 @@
 
     <a href="{% url 'authenticate:account_view' 'user1' %}">authentication/account/public/2/</a> - only GET , public account view, require nothing<br><br>
 
+    <hr>
 <br>
 <br>
 <br>
-    <h1>Post Actions</h1>
+    <h2>Post Actions</h2>
     <br>
 {% for item in posts %}
     <hr>
-        <h2>{{ item.title }}</h2>
+        <h2>Title: {{ item.title }}</h2>
     <br>
-        <h3>{{ item.desc }}</h3>
+        <h3>Desc: {{ item.desc }}</h3>
     <br>
-        <h4>{{ item.author.username }}</h4>
+        <h4>Author: {{ item.author.username }}</h4>
     <a href="{% url 'post:create_section' item.id %}">post/create/section/{{ item.id }}/ <- This is post`s id</a> - only Post, data example: {"title": "...", "content": "..."}, requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"<br><br>
 
     <a href="{% url 'post:edit_section' item.id %}">post/edit/section/{{ item.id }}/ <- This is post`s id</a> - allow method: ["GET", "PUT", "DELETE"], data example to "PUT": {"title": "...", "content": "..."}, requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"<br><br>
