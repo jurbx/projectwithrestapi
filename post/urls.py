@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import PostCreate, PostView, PostDetail, get_csrf, PostEdit, AddComment, AddLikes
+from .views import PostCreate, PostView, PostDetail, get_csrf, PostEdit, AddComment, AddLikes, SectionCreate, SectionEdit
 
 app_name = 'post'
 
@@ -12,6 +12,10 @@ urlpatterns = [
     path('list/', PostView.as_view(), name='list'),
     path('detail/<int:pk>/', PostDetail.as_view(), name='post_detail'),
     path('edit/<int:pk>/', PostEdit.as_view(), name='post_edit'),
+
+    # Section action
+    path('create/section/<int:post_id>/', SectionCreate.as_view(), name='create_section'),
+    path('edit/section/<int:pk>/', SectionEdit.as_view(), name='edit_section'),
 
     # Likes actions
     path('like/<int:post_id>/', AddLikes.as_view(), name='add_like'),

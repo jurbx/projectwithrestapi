@@ -1,5 +1,50 @@
-from .models import PostInfo, Comment, Likes
+from .models import PostInfo, Comment, Likes, Section
 from rest_framework import serializers
+
+from authentification.models import User
+from authentification.serializers import AccountViewSerializer
+
+
+class PostInfoSerializer(serializers.ModelSerializer):
+    author = serializers.SerializerMethodField()
+    sections = serializers.SerializerMethodField()
+    comments = serializers.SerializerMethodField()
+    likes = serializers.SerializerMethodField()
+
+    class Meta:
+        model = PostInfo
+        fields = ('id', 'title', 'sections', 'author', 'comments', 'likes')
+
+    def get_author(self, obj):
+        c_qs = User.objects.get(id=obj.id)
+        author = AccountViewSerializer(c_qs, many=False).data
+        return author
+
+    def get_comments(self, obj):
+        c_qs = Comment.objects.filter(post_id=obj.id)
+        comments = CommentViewSerializer(c_qs, many=True).data
+        return comments
+
+    def get_likes(self, obj):
+        c_qs = Likes.objects.filter(post_id=obj.id)
+        likes = ViewLikesSerializer(c_qs, many=True).data
+        return likes
+
+    def get_sections(self, obj):
+        c_qs = Section.objects.filter(post_id=obj.id)
+        sections = SectionDetailSerializer(c_qs, many=True).data
+        return sections
+
+
+class PostDetailSerializer(PostInfoSerializer):
+    class Meta:
+        model = PostInfo
+        fields = '__all__'
+
+    def get_sections(self, obj):
+        c_qs = Section.objects.filter(post_id=obj.id).order_by('id')[0]
+        section = SectionDetailSerializer(c_qs, many=False).data
+        return section
 
 
 class PostCreateSerializer(serializers.ModelSerializer):
@@ -7,29 +52,28 @@ class PostCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PostInfo
-        fields = ('title', 'desc', 'author')
+        fields = '__all__'
 
 
-class PostDetailSerializer(serializers.ModelSerializer):
-    author = serializers.CharField(source='author.username', read_only=True)
-    comments = serializers.SerializerMethodField()
-    likes = serializers.SerializerMethodField()
+class SectionCreateSerializer(serializers.ModelSerializer):
+    author = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
-        model = PostInfo
-        fields = ('id', 'title', 'desc', 'author', 'comments', 'likes')
+        model = Section
+        fields = ('title', 'content', 'post_id', 'author')
+        extra_kwargs = {
+            'post_id': {'required': False}
+        }
 
-    def get_comments(self, obj):
-        obj_id = obj.id
-        c_qs = Comment.objects.filter(post_id=obj_id)
-        comments = CommentViewSerializer(c_qs, many=True).data
-        return comments
 
-    def get_likes(self, obj):
-        obj_id = obj.id
-        c_qs = Likes.objects.filter(post_id=obj_id)
-        likes = ViewLikesSerializer(c_qs, many=True).data
-        return likes
+class SectionDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Section
+        fields = '__all__'
+        extra_kwargs = {
+            'post_id': {'required': False},
+            'author': {'required': False},
+        }
 
 
 class AddCommentSerializer(serializers.ModelSerializer):
@@ -49,14 +93,6 @@ class CommentViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
-
-
-class PostInfoSerializer(serializers.ModelSerializer):
-    author = serializers.CharField(source='author.username', read_only=True)
-
-    class Meta:
-        model = PostInfo
-        fields = ('id', 'title', 'desc', 'author')
 
 
 class ViewLikesSerializer(serializers.ModelSerializer):

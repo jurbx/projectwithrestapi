@@ -1,12 +1,14 @@
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.shortcuts import render
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-from .models import PostInfo, Comment, Likes
+from .models import PostInfo, Comment, Likes, Section
 from rest_framework import generics, status
-from .serializers import PostInfoSerializer, PostDetailSerializer, PostCreateSerializer, AddCommentSerializer, \
-    AddOrRemoveLikesSerializer
+from .serializers import PostInfoSerializer, PostDetailSerializer, SectionCreateSerializer, AddCommentSerializer, \
+    AddOrRemoveLikesSerializer, PostCreateSerializer, SectionDetailSerializer
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.views.decorators.csrf import get_token
@@ -32,6 +34,25 @@ class PostCreate(generics.CreateAPIView):
     queryset = PostInfo.objects.all()
     serializer_class = PostCreateSerializer
     permission_classes = (IsAuthenticated, )
+
+
+class SectionCreate(generics.CreateAPIView):
+    queryset = Section.objects.all()
+    serializer_class = SectionCreateSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def perform_create(self, serializer):
+        try:
+            post = PostInfo.objects.get(id=self.kwargs.get('post_id'))
+            serializer.save(post_id=post)
+        except AttributeError:
+            return Response(data={'error': 'post with that id does not exist'})
+
+
+class SectionEdit(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Section.objects.all()
+    serializer_class = SectionDetailSerializer
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
 
 
 class PostView(generics.ListAPIView):
@@ -74,5 +95,3 @@ class AddLikes(generics.CreateAPIView, TokenAuthentication):
             Likes.objects.get(author=auth[0]).delete()
             return Response(data={'delete': 'successfully'}, status=status.HTTP_200_OK)
         return super(AddLikes, self).post(request, *args, **kwargs)
-
-
