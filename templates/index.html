@@ -27,7 +27,7 @@
     <a href="{% url 'post:edit_section' item.id %}">post/edit/section/{{ item.id }}/ <- This is post`s id</a> - allow method: ["GET", "PUT", "DELETE"], data example to "PUT": {"title": "...", "content": "..."}, requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"<br><br>
     <br>
     <a href="{% url 'post:post_detail' item.id %}">post/detail/{{ item.id }}/</a> - only GET,<br><br>
-    <a href="{% url "post:post_edit" item.id %}">post/edit/{{ item.id }}/</a> - work request ["GET", "PUT", "DELETE"], requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"
+    <a href="{% url "post:post_edit" item.id %}">post/edit/{{ item.id }}/</a> - work request ["GET", "PUT", "DELETE"], data example to "PUT": {"title": "..."} requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"
     <br>
     {{ item.title }}
     <br>
