@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'post.apps.ApiConfig',
     'corsheaders',
     'rest_framework.authtoken',
+    'frontend.apps.FrontendConfig'
 ]
 
 REST_FRAMEWORK = {
@@ -81,12 +82,14 @@ ROOT_URLCONF = 'projectwithrestapi.urls'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-ALLOWED_HOSTS = ['projectwithrestapi.herokuapp.com']
+# ALLOWED_HOSTS = ['projectwithrestapi.herokuapp.com']
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
+        'DIRS': [
+            os.path.join(BASE_DIR, 'frontend/public')
+        ]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -113,13 +116,13 @@ WSGI_APPLICATION = 'projectwithrestapi.wsgi.application'
 # }
 
 DATABASES = {
-'default': {
-'ENGINE': 'django.db.backends.postgresql',
-'NAME': DB_NAME,
-'USER': DB_USER,
-'PASSWORD': DB_PASSWORD,
-'HOST': DB_HOST,
-'PORT': '5432',
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': '5432',
 }
 }
 
@@ -166,7 +169,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'frontend/public/static'),
 )
 
 MEDIA_URL = '/media/'

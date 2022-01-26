@@ -1,0 +1,25 @@
+@import "~bootstrap/scss/bootstrap";
+
+#headerNav {
+  .nav-link {
+    color: $white;
+    text-transform: capitalize !important;
+
+    &.home:hover, &.home.active {
+      color: $secondary;
+    }
+    &.about:hover, &.about.active {
+      color: $blue;
+    }
+    &.account:hover, &.account.active {
+      color: $green;
+    }
+    &.sign-in:hover, &.sign-in.active,
+    &.sign-up:hover, &.sign-up.active {
+      color: $cyan;
+    }
+    &.sign-out:hover, &.sign-out.active {
+      color: $red;
+    }
+  }
+}
