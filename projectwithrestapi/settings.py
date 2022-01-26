@@ -82,7 +82,7 @@ ROOT_URLCONF = 'projectwithrestapi.urls'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-# ALLOWED_HOSTS = ['projectwithrestapi.herokuapp.com']
+ALLOWED_HOSTS = ['projectwithrestapi.herokuapp.com']
 
 TEMPLATES = [
     {
