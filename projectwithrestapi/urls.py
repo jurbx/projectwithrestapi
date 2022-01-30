@@ -23,5 +23,6 @@ urlpatterns = [
     path('post/', include('post.urls', namespace='post')),
     path('authentication/', include('authentification.urls', namespace='authentication')),
 
-    path('', post_info),
+    path('info/', post_info),
+    path('', include('frontend.urls'))
 ]
