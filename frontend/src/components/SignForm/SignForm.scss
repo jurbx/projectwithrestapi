@@ -1,0 +1,43 @@
+@import "~bootstrap/scss/bootstrap";
+
+#formWrapper {
+  position: relative;
+  overflow: hidden;
+
+  & > video {
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+  }
+  & > main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    & > form {
+      position: relative;
+      width: 80%;
+      max-width: 30rem;
+      padding: map-get($spacers, 4);
+      border: $border-width solid $border-color;
+      border-radius: $border-radius-lg;
+      background: rgba($dark, .9);
+    }
+    & input:not([type="checkbox"]) {
+      background: transparent;
+      color: $white;
+    }
+    & input[type="checkbox"] {
+      border-color: $border-color;
+      background-color: $dark;
+
+      &:checked {
+        border-color: $primary;
+        background-color: $primary;
+      }
+    }
+    & .form-floating {
+      margin-bottom: map-get($spacers, 2);
+    }
+  }
+}

@@ -1,0 +1,9 @@
+@import "~bootstrap/scss/bootstrap";
+@import "scss/media";
+
+#root {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  background: $black;
+}

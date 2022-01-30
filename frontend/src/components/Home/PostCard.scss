@@ -1,0 +1,37 @@
+@import "~bootstrap/scss/bootstrap";
+
+#postCardCont {
+  .card {
+    &:not(:first-of-type) {
+      margin-top: map-get($spacers, 4);
+    }
+    .card-header {
+      display: grid;
+      grid-template: 2fr / auto 1fr;
+      justify-content: start;
+
+      img {
+        grid-row: 1 / 3;
+        height: 3.5rem;
+        margin-right: map-get($spacers, 2);
+      }
+      p, h3 {
+        margin: 0;
+      }
+      h3 > a {
+        color: tint-color($primary, 30%);
+        transition: $transition-base;
+
+        &:hover {
+          color: $primary;
+        }
+      }
+    }
+    .card-body {
+      max-height: 20rem;
+    }
+    .card-header, .card-footer {
+      background: tint-color($dark, 5%);
+    }
+  }
+}
