@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import PostCreate, PostView, PostDetail, get_csrf, PostEdit, AddComment, AddLikes, SectionCreate, SectionEdit
+from .views import PostCreate, PostView, PostDetail, get_csrf, PostEdit, AddComment, AddLikes, SectionCreate, \
+    SectionEdit, post_info
 
 app_name = 'post'
 
@@ -25,4 +26,6 @@ urlpatterns = [
 
     # generate csrf token
     path('get_csrf/', get_csrf, name="get_csrf"),
+
+    path('info/', post_info),
 ]

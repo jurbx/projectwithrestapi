@@ -33,8 +33,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['projectwithrestapi.herokuapp.com']андащ
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -88,7 +86,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'frontend/public')
+            os.path.join(BASE_DIR, 'frontend/public'),
+            os.path.join(BASE_DIR, 'templates'),
         ]
         ,
         'APP_DIRS': True,

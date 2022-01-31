@@ -19,7 +19,7 @@ def get_csrf(request):
 
 def post_info(request):
     posts = PostInfo.objects.all()
-    return render(request, 'index.html', {'posts': posts})
+    return render(request, 'index1.html', {'posts': posts})
 
 
 class PostDetail(generics.RetrieveAPIView):

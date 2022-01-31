@@ -16,13 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from post.views import post_info
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('post/', include('post.urls', namespace='post')),
     path('authentication/', include('authentification.urls', namespace='authentication')),
 
-    path('info/', post_info),
     path('', include('frontend.urls'))
 ]
