@@ -37,6 +37,10 @@ class AccountApiEditView(RetrieveUpdateAPIView, TokenAuthentication):
             if request.data.get('password') != request.data.get('password2'):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             user.set_password(request.data['password'])
+        if first_name := request.data.get('first_name'):
+            user.__setattr__('first_name', first_name)
+        if last_name := request.data.get('last_name'):
+            user.__setattr__('last_name', last_name)
         data["username"] = user.username
         data["email"] = user.email
         data["first_name"] = user.first_name
