@@ -100,6 +100,11 @@ class AddCommentSerializer(serializers.ModelSerializer):
             'post_id': {'required': False}
         }
 
+    def get_author(self, obj):
+        c_qs = User.objects.get(id=obj.author.id)
+        author = AccountViewSerializer(c_qs, many=False).data
+        return author
+
 
 class CommentViewSerializer(serializers.ModelSerializer):
     author = serializers.SerializerMethodField()
