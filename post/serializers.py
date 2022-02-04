@@ -91,19 +91,14 @@ class SectionEditSerializer(serializers.ModelSerializer):
 
 
 class AddCommentSerializer(serializers.ModelSerializer):
-    author = serializers.SerializerMethodField()
+    author = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Comment
         fields = ('message', 'author', 'post_id')
         extra_kwargs = {
-            'post_id': {'required': False}
+            'post_id': {'required': False},
         }
-
-    def get_author(self, obj):
-        c_qs = User.objects.get(id=obj.author.id)
-        author = AccountViewSerializer(c_qs, many=False).data
-        return author
 
 
 class CommentViewSerializer(serializers.ModelSerializer):
