@@ -26,5 +26,5 @@ urlpatterns = [
     # generate csrf token
     path('get_csrf/', get_csrf, name="get_csrf"),
 
-    path('info/', post_info),
+    path('', post_info),
 ]
