@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from .models import PostInfo, Comment, Likes, Section
 from rest_framework import generics, status
 from .serializers import PostInfoSerializer, PostDetailSerializer, SectionCreateSerializer, AddCommentSerializer, \
-    AddOrRemoveLikesSerializer, PostCreateSerializer, SectionEditSerializer
+    AddOrRemoveLikesSerializer, PostCreateSerializer
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.views.decorators.csrf import get_token
