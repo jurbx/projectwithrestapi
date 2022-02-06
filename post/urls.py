@@ -2,7 +2,7 @@ from django.urls import path
 from .views import PostCreate, PostView, PostDetail, get_csrf, PostEdit, AddComment, AddLikes, SectionCreate, \
     post_info
 
-app_name = 'post'
+app_name = 'api'
 
 # router = routers.DefaultRouter()
 # router.register('', PostInfoViewSet)
