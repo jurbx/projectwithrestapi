@@ -50,12 +50,6 @@ class SectionCreate(generics.CreateAPIView):
         return Response(data={'error': 'invalid user'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class SectionEdit(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Section.objects.all()
-    serializer_class = SectionEditSerializer
-    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
-
-
 class PostView(generics.ListAPIView):
     permission_classes = (AllowAny, )
     queryset = PostInfo.objects.all()
@@ -66,6 +60,12 @@ class PostEdit(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PostDetailSerializer
     queryset = PostInfo.objects.all()
     permission_classes = (IsOwnerOrReadOnly, IsAuthenticated)
+
+    def put(self, request, *args, **kwargs):
+        if sections := request.data.get('sections'):
+            for item in sections:
+                Section.objects.filter(id=item.get('id')).update(title=item.get('title') or None, content=item.get('desc') or None)
+        return super(PostEdit, self).put(request, *args, **kwargs)
 
 
 class AddComment(generics.CreateAPIView):

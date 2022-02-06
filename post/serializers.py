@@ -80,16 +80,6 @@ class SectionDetailSerializer(serializers.ModelSerializer):
         }
 
 
-class SectionEditSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Section
-        fields = '__all__'
-        extra_kwargs = {
-            'post_id': {'required': False},
-            'author': {'required': False},
-        }
-
-
 class AddCommentSerializer(serializers.ModelSerializer):
     author = serializers.HiddenField(default=serializers.CurrentUserDefault())
 

@@ -16,7 +16,6 @@ urlpatterns = [
 
     # Section action
     path('create/section/<int:post_id>/', SectionCreate.as_view(), name='create_section'),
-    path('edit/section/<int:pk>/', SectionEdit.as_view(), name='edit_section'),
 
     # Likes actions
     path('like/<int:post_id>/', AddLikes.as_view(), name='add_like'),
