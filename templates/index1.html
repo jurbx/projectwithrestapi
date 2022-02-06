@@ -36,8 +36,6 @@
     <br>
         <h4>Author: {{ item.author.username }}</h4>
     <a href="{% url 'api:create_section' item.id %}">api/create/section/{{ item.id }}/ <- This is post`s id</a> - only Post, data example: {"title": "...", "content": "..."}, requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"<br><br>
-
-    <a href="{% url 'api:edit_section' item.id %}">api/edit/section/{{ item.id }}/ <- This is post`s id</a> - allow method: ["GET", "PUT", "DELETE"], data example to "PUT": {"title": "...", "content": "..."}, requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"<br><br>
     <br>
     <a href="{% url 'api:post_detail' item.id %}">api/detail/{{ item.id }}/</a> - only GET,<br><br>
     <a href="{% url "api:post_edit" item.id %}">api/edit/{{ item.id }}/</a> - work request ["GET", "PUT", "DELETE"], data example to "PUT": {"title": "...", "sections": {"id": "...", "title": "...", "desc": "..."}} requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"<br><br>
