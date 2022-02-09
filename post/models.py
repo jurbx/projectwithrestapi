@@ -18,6 +18,9 @@ class Section(models.Model):
     content = models.TextField(max_length=5000)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.title
+
 
 class Comment(models.Model):
     message = models.CharField(max_length=255)
