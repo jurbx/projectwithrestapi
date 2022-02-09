@@ -12,7 +12,7 @@
     <a href="{% url 'authenticate:login' %}">Login : authentication/login/</a> - only Post/ return authenticate TOKEN<br><br>
     <a href="{% url 'authenticate:registration' %}">Registration : authentication/register/</a> - only Post, data example: {"username": "...", "email": "...", "password": "...", "password2": "...", "first_name": "...", "last_name": "...", "avatar": "..."} - only Post / return response<br><br>
 
-    <a href="{% url 'post:create' %}">post/create/</a> - only Post, data example: {"title": "...", "desc": "..."}, requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"<br><br>
+    <a href="{% url 'post:create' %}">post/create/</a> - only Post, data example: {"title": "...", "sections": {"id": "...", "title": "...", "desc": "..."}}, requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"<br><br>
 
     <a href="{% url 'post:list' %}">post/list/</a> - GET request, require - nothing<br><br>
 
