@@ -32,6 +32,12 @@ class PostCreate(generics.CreateAPIView):
     queryset = PostInfo.objects.all()
     serializer_class = PostCreateSerializer
     permission_classes = (IsAuthenticated, )
+    
+    def post(self, request, *args, **kwargs):
+        if sections := request.data.get('sections'):
+            for item in sections:
+                Section.objects.create(title=item.get('title') or None, content=item.get('desc') or None)
+        return super(PostCreate, self).post(request, *args, **kwargs)
 
 
 class SectionCreate(generics.CreateAPIView):
