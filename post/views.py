@@ -34,9 +34,12 @@ class PostCreate(generics.CreateAPIView):
     permission_classes = (IsAuthenticated, )
     
     def post(self, request, *args, **kwargs):
+        if post := request.data.get('title'):
+            post = PostInfo.objects.create(title=post, author=request.user)
         if sections := request.data.get('sections'):
             for item in sections:
-                Section.objects.create(title=item.get('title') or None, content=item.get('desc') or None, author=request.user)
+                Section.objects.create(post_id=post, title=item.get('title') or None, content=item.get('desc') or None,
+                author=request.user)
         return super(PostCreate, self).post(request, *args, **kwargs)
 
 
