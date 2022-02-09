@@ -36,11 +36,19 @@ class PostCreate(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         if post := request.data.get('title'):
             post = PostInfo.objects.create(title=post, author=request.user)
+        else:
+            return Response(data={'detail': 'Missing title data'})
         if sections := request.data.get('sections'):
+            if not request.data.sections.get('title'):
+                return Response(data={'detail': 'Missing title data'})
+            if not request.data.sections.get('desc'):
+                return Response(data={'detail': 'Missing desc data'})
             for item in sections:
                 Section.objects.create(post_id=post, title=item.get('title') or None, content=item.get('desc') or None,
                 author=request.user)
-        return super(PostCreate, self).post(request, *args, **kwargs)
+        else:
+            return Response(data={'detail': 'Missing sections data'})
+        return Response(data={'ok': 'ok'}, status=status.HTTP_200_OK)
 
 
 class SectionCreate(generics.CreateAPIView):
