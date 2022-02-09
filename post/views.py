@@ -39,9 +39,9 @@ class PostCreate(generics.CreateAPIView):
         else:
             return Response(data={'detail': 'Missing title data'})
         if sections := request.data.get('sections'):
-            if not request.data.get('sections').get('title'):
+            if not request.data[0].get('title'):
                 return Response(data={'detail': 'Missing title data'})
-            if not request.data.get('sections').get('desc'):
+            if not request.data[0].get('desc'):
                 return Response(data={'detail': 'Missing desc data'})
             for item in sections:
                 Section.objects.create(post_id=post, title=item.get('title') or None, content=item.get('desc') or None,
