@@ -12,7 +12,7 @@
     <a href="{% url 'authenticate:login' %}">Login : authentication/login/</a> - only Post/ return authenticate TOKEN<br><br>
     <a href="{% url 'authenticate:registration' %}">Registration : authentication/register/</a> - only Post, data example: {"username": "...", "email": "...", "password": "...", "password2": "...", "first_name": "...", "last_name": "...", "avatar": "..."} - only Post / return response<br><br>
 
-    <a href="{% url 'post:create' %}">post/create/</a> - only Post, data example: {"title": "...", "sections": {"id": "...", "title": "...", "desc": "..."}}, requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"<br><br>
+    <a href="{% url 'post:create' %}">post/create/</a> - only Post, data example: {"title": "...", "sections": {"id": "...", "title": "...", "content": "..."}}, requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"<br><br>
 
     <a href="{% url 'post:list' %}">post/list/</a> - GET request, require - nothing<br><br>
 
@@ -38,7 +38,7 @@
     <a href="{% url 'api:create_section' item.id %}">api/create/section/{{ item.id }}/ <- This is post`s id</a> - only Post, data example: {"title": "...", "content": "..."}, requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"<br><br>
     <br>
     <a href="{% url 'api:post_detail' item.id %}">api/detail/{{ item.id }}/</a> - only GET,<br><br>
-    <a href="{% url "api:post_edit" item.id %}">api/edit/{{ item.id }}/</a> - work request ["GET", "PUT", "DELETE"], data example to "PUT": {"title": "...", "sections": {"id": "...", "title": "...", "desc": "..."}} requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"<br><br>
+    <a href="{% url "api:post_edit" item.id %}">api/edit/{{ item.id }}/</a> - work request ["GET", "PUT", "DELETE"], data example to "PUT": {"title": "...", "sections": {"id": "...", "title": "...", "content": "..."}} requires authenticate TOKEN, token input in header "Authorization": "Token {token value}"<br><br>
     <a href="{% url 'api:add_comment'  item.id %}">api/add/comment/{{ item.id }}/</a> - only Post, data example: {"message": "..."} / return comment message and post_id, requires authenticate TOKEN, token input in header "Authorization": "Token {token value}" View post comments will be soon<br><br>
     <a href="{% url 'api:add_like' item.id %}"> api/like/{{ item.id }}/</a> - only Post, requires authenticate TOKEN, <bold>second POST request remove like from user</bold>, token input in header "Authorization": "Token {token value}"<br><br>
 {% endfor %}

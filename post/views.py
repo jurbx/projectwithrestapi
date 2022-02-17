@@ -43,10 +43,10 @@ class PostCreate(generics.CreateAPIView):
                 title = item.get('title')
                 if not title:
                     return Response(data={'detail': 'Missing title data'})
-                desc = item.get('desc')
+                desc = item.get('content')
                 if not desc:
-                    return Response(data={'detail': 'Missing desc data'})
-                Section.objects.create(post_id=post, title=item.get('title') or None, content=item.get('desc') or None,
+                    return Response(data={'detail': 'Missing content data'})
+                Section.objects.create(post_id=post, title=item.get('title') or None, content=item.get('content') or None,
                     author=request.user)
         else:
             return Response(data={'detail': 'Missing sections data'})
@@ -83,7 +83,7 @@ class PostEdit(generics.RetrieveUpdateDestroyAPIView):
     def put(self, request, *args, **kwargs):
         if sections := request.data.get('sections'):
             for item in sections:
-                Section.objects.filter(id=item.get('id')).update(title=item.get('title') or None, content=item.get('desc') or None)
+                Section.objects.filter(id=item.get('id')).update(title=item.get('title') or None, content=item.get('content') or None)
         return super(PostEdit, self).put(request, *args, **kwargs)
 
 
