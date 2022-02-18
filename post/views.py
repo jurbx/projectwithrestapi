@@ -96,7 +96,7 @@ class PostEdit(generics.RetrieveUpdateDestroyAPIView):
                         return Response(data={'detail': 'Missing title data'})
                     if not content:
                         return Response(data={'detail': 'Missing content data'})
-                    Section.objects.create(title=title, content=content, post_id=PostInfo.objects.get(id=self.kwargs.get('pk')))
+                    Section.objects.create(title=title, content=content, post_id=self.get_queryset())
         return super(PostEdit, self).put(request, *args, **kwargs)
 
 
