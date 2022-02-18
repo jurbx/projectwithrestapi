@@ -81,7 +81,10 @@ class PostEdit(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsOwnerOrReadOnly, IsAuthenticated)
 
     def delete(self, request, *args, **kwargs):
-        Section.objects.filter(post_id=PostInfo.objects.get(id=self.kwargs.get('pk'))).delete()
+        post = PostInfo.objects.get(id=self.kwargs.get('pk'))
+        Section.objects.filter(post_id=post or None).delete()
+        Likes.objects.filter(post_id=post or None).delete()
+        Comment.objects.filter(post_id=post or None).delete()
         return super(PostEdit, self).delete(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
