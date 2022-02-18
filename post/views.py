@@ -84,14 +84,19 @@ class PostEdit(generics.RetrieveUpdateDestroyAPIView):
         if sections := request.data.get('sections'):
             for item in sections:
                 id = item.get('id')
-                if not id:
-                    return Response(data={'Missing section field': "id"})
                 title = item.get('title')
                 content = item.get('content')
-                if section := Section.objects.filter(id=id):
-                    section.update(title=title or None, content=content or None)
+                if id:
+                    if section := Section.objects.filter(id=id):
+                        section.update(title=title or None, content=content or None)
+                    else:
+                        return Response(data={'detail': 'section with that id does not exist'})
                 else:
-                    return Response(data={'detail': 'section with that id does not exist'})
+                    if not title:
+                        return Response(data={'detail': 'Missing title data'})
+                    if not content:
+                        return Response(data={'detail': 'Missing content data'})
+                    Section.objects.create(title=title, content=content, post_id=self.get_object())
         return super(PostEdit, self).put(request, *args, **kwargs)
 
 
