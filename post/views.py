@@ -80,6 +80,10 @@ class PostEdit(generics.RetrieveUpdateDestroyAPIView):
     queryset = PostInfo.objects.all()
     permission_classes = (IsOwnerOrReadOnly, IsAuthenticated)
 
+    def delete(self, request, *args, **kwargs):
+        Section.objects.filter(post_id=PostInfo.objects.get(id=self.kwargs.get('pk'))).delete()
+        return super(PostEdit, self).delete(request, *args, **kwargs)
+
     def put(self, request, *args, **kwargs):
         if sections := request.data.get('sections'):
             for item in sections:
