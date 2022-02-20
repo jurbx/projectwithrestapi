@@ -41,6 +41,7 @@ class AccountApiEditView(RetrieveUpdateAPIView):
             user.set_last_name(last_name)
         if avatar := request.data.get('avatar'):
             user.set_avatar(avatar)
+        user.save()
         data["username"] = user.username
         data["email"] = user.email
         data["first_name"] = user.first_name
