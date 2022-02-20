@@ -120,7 +120,7 @@ class AddComment(generics.CreateAPIView):
     #     return super().get_queryset().filter(post=self.kwargs.get('post_id'))
 
 
-class AddLikes(generics.CreateAPIView, TokenAuthentication):
+class AddLikes(generics.CreateAPIView):
     serializer_class = AddOrRemoveLikesSerializer
     queryset = Likes.objects.all()
     permission_classes(IsAuthenticated, )
@@ -130,8 +130,8 @@ class AddLikes(generics.CreateAPIView, TokenAuthentication):
         serializer.save(post_id=post)
 
     def post(self, request, *args, **kwargs):
-        auth = super().authenticate(request)
-        if like := Likes.objects.filter(author=auth[0]):
+        user = request.user
+        if like := Likes.objects.filter(author=user):
             like.delete()
             return Response(data={'delete': 'successfully'}, status=status.HTTP_200_OK)
         return super(AddLikes, self).post(request, *args, **kwargs)

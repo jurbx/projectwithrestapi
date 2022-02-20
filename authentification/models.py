@@ -121,6 +121,15 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
         self.slug = slug
         super().save(*args, **kwargs)
 
+    def set_first_name(self, first_name):
+        self.first_name = first_name
+
+    def set_last_name(self, last_name):
+        self.last_name = last_name
+
+    def set_avatar(self, avatar):
+        self.avatar = avatar
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

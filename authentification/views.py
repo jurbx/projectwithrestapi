@@ -1,4 +1,3 @@
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -23,26 +22,25 @@ class RegisterApiView(CreateAPIView):
     permission_classes = (AllowAny,)
 
 
-class AccountApiEditView(RetrieveUpdateAPIView, TokenAuthentication):
+class AccountApiEditView(RetrieveUpdateAPIView):
     queryset = User.objects.all()
     serializer_class = AccountSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrNoAccess)
     lookup_field = 'slug'
 
     def put(self, request, *args, **kwargs):
-        data = super().authenticate(request)
-        user = data[0]
+        user = request.user
         data = {}
         if request.data.get('password') and request.data.get('password2'):
             if request.data.get('password') != request.data.get('password2'):
                 return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': 'passwords do not match'})
             user.set_password(request.data['password'])
         if first_name := request.data.get('first_name'):
-            user.__setattr__('first_name', first_name)
+            user.set_first_name(first_name)
         if last_name := request.data.get('last_name'):
-            user.__setattr__('last_name', last_name)
+            user.set_last_name(last_name)
         if avatar := request.data.get('avatar'):
-            user.__setattr__('avatar', avatar)
+            user.set_avatar(avatar)
         data["username"] = user.username
         data["email"] = user.email
         data["first_name"] = user.first_name
