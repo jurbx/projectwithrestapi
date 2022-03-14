@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import PostCreate, PostView, PostDetail, get_csrf, PostEdit, AddComment, AddLikes, SectionCreate, \
-    post_info
+    post_info, DeleteComment
 
 app_name = 'api'
 
@@ -22,6 +22,7 @@ urlpatterns = [
 
     # Comment actions
     path('add/comment/<int:post_id>/', AddComment.as_view(), name='add_comment'),
+    path('delete/comment/<int:post_id>/', DeleteComment.as_view(), name='delete_comment'),
 
     # generate csrf token
     path('get_csrf/', get_csrf, name="get_csrf"),

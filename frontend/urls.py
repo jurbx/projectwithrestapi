@@ -8,6 +8,8 @@ urlpatterns = [
     path('sign-in', index),
     path('sigh-up', index),
     path('sigh-out', index),
+    path('<slug:slug>', index),
     path('users/<slug:username>', index),
+    path('users/<slug:username>/edit', index),
 
 ]
