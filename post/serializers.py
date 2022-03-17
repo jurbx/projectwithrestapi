@@ -98,6 +98,18 @@ class EditDeleteCommentSerializer(serializers.ModelSerializer):
         fields = ('message', )
 
 
+class CommentViewSerializer(serializers.ModelSerializer):
+    author = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+    def get_author(self, obj):
+        c_qs = User.objects.get(id=obj.author.id)
+        author = AccountViewSerializer(c_qs, many=False).data
+        return author
+
 class ViewLikesSerializer(serializers.ModelSerializer):
     author = serializers.CharField(source='author.username')
 
