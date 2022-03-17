@@ -119,10 +119,10 @@ class AddComment(generics.CreateAPIView):
     #     return super().get_queryset().filter(post=self.kwargs.get('post_id'))
 
 
-class DeleteComment(generics.DestroyAPIView):
+class UpdateDeleteComment(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AddCommentSerializer
     queryset = Comment.objects.all()
     permission_classes = (IsOwnerOrReadOnly, )
-    lookup_field = 'comment_id'
 
 
 class AddLikes(generics.CreateAPIView):
