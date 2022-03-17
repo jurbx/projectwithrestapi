@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 
@@ -46,8 +45,9 @@ class PostCreate(generics.CreateAPIView):
                 desc = item.get('content')
                 if not desc:
                     return Response(data={'detail': 'Missing content data'})
-                Section.objects.create(post_id=post, title=item.get('title') or None, content=item.get('content') or None,
-                    author=request.user)
+                Section.objects.create(post_id=post, title=item.get('title') or None,
+                                       content=item.get('content') or None,
+                                       author=request.user)
         else:
             return Response(data={'detail': 'Missing sections data'})
         return Response(data={'ok': 'ok'}, status=status.HTTP_200_OK)
@@ -66,7 +66,7 @@ class SectionCreate(generics.CreateAPIView):
         post = PostInfo.objects.get(id=self.kwargs.get('post_id'))
         if post.author == request.user:
             return super().create(request, *args, **kwargs)
-        return Response(data={'error': 'invalid user'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(data={'error': 'invalid user'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class PostView(generics.ListAPIView):
@@ -81,7 +81,7 @@ class PostEdit(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsOwnerOrReadOnly, IsAuthenticated)
 
     def delete(self, request, *args, **kwargs):
-        post = PostInfo.objects.get(id=self.kwargs.get('pk'))
+        post = self.kwargs.get('pk')
         Section.objects.filter(post_id=post or None).delete()
         Likes.objects.filter(post_id=post or None).delete()
         Comment.objects.filter(post_id=post or None).delete()
@@ -90,10 +90,9 @@ class PostEdit(generics.RetrieveUpdateDestroyAPIView):
     def put(self, request, *args, **kwargs):
         if sections := request.data.get('sections'):
             for item in sections:
-                id = item.get('id')
                 title = item.get('title')
                 content = item.get('content')
-                if id:
+                if id := item.get('id'):
                     if section := Section.objects.filter(id=id):
                         section.update(title=title or None, content=content or None)
                     else:
@@ -113,7 +112,7 @@ class AddComment(generics.CreateAPIView):
     permission_classes = (IsAuthenticated, )
 
     def perform_create(self, serializer):
-        post = PostInfo.objects.get(id=self.kwargs.get('post_id'))
+        post = PostInfo.objects.get(id=self.kwargs.get('comment_id'))
         serializer.save(post_id=post)
 
     # def get_queryset(self):
@@ -123,7 +122,7 @@ class AddComment(generics.CreateAPIView):
 class DeleteComment(generics.DestroyAPIView):
     queryset = Comment.objects.all()
     permission_classes = (IsOwnerOrReadOnly, )
-    lookup_field = 'post_id'
+    lookup_field = 'comment_id'
 
 
 class AddLikes(generics.CreateAPIView):

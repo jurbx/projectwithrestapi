@@ -1,15 +1,6 @@
-from django.urls import path
+from django.urls import re_path
 from .views import index
 
-
 urlpatterns = [
-    path('', index),
-    path('about', index),
-    path('sign-in', index),
-    path('sigh-up', index),
-    path('sigh-out', index),
-    path('<slug:slug>', index),
-    path('users/<slug:username>', index),
-    path('users/<slug:username>/edit', index),
-
+    re_path(r".*", index)
 ]

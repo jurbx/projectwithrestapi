@@ -21,8 +21,8 @@ urlpatterns = [
     path('like/<int:post_id>/', AddLikes.as_view(), name='add_like'),
 
     # Comment actions
-    path('add/comment/<int:post_id>/', AddComment.as_view(), name='add_comment'),
-    path('delete/comment/<int:post_id>/', DeleteComment.as_view(), name='delete_comment'),
+    path('add/comment/<int:comment_id>/', AddComment.as_view(), name='add_comment'),
+    path('delete/comment/<int:comment_id>/', DeleteComment.as_view(), name='delete_comment'),
 
     # generate csrf token
     path('get_csrf/', get_csrf, name="get_csrf"),
