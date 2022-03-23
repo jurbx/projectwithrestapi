@@ -50,7 +50,7 @@ class PostCreate(generics.CreateAPIView):
                                        author=request.user)
         else:
             return Response(data={'detail': 'Missing sections data'})
-        return Response(data={'ok': 'ok'}, status=status.HTTP_200_OK)
+        return Response(data={'post_id': post.id}, status=status.HTTP_200_OK)
 
 
 class SectionCreate(generics.CreateAPIView):
@@ -88,16 +88,24 @@ class PostEdit(generics.RetrieveUpdateDestroyAPIView):
         return super(PostEdit, self).delete(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
+        ''' Trying to get sections '''
         if sections := request.data.get('sections'):
             for item in sections:
                 title = item.get('title')
                 content = item.get('content')
                 if id := item.get('id'):
                     if section := Section.objects.filter(id=id):
+                        ''' Delete sections '''
+                        if item.get('delete'):
+                            section.delete()
+                            continue
+
+                        ''' Update sections '''
                         section.update(title=title or None, content=content or None)
                     else:
                         return Response(data={'detail': 'section with that id does not exist'})
                 else:
+                    ''' Create sections '''
                     if not title:
                         return Response(data={'detail': 'Missing title data'})
                     if not content:
