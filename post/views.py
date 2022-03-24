@@ -144,7 +144,7 @@ class AddLikes(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         user = request.user
-        if like := Likes.objects.filter(author=user):
+        if like := Likes.objects.filter(author=user, post_id_id=self.kwargs.get('post_id')):
             like.delete()
             return Response(data={'delete': 'successfully'}, status=status.HTTP_200_OK)
         return super(AddLikes, self).post(request, *args, **kwargs)
