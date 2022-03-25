@@ -29,5 +29,5 @@ class Comment(models.Model):
 
 
 class Likes(models.Model):
-    post_id = models.OneToOneField(PostInfo, on_delete=models.CASCADE)
+    post_id = models.ForeignKey(PostInfo, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
